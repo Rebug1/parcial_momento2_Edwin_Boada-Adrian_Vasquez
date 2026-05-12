@@ -31,6 +31,26 @@ def mostrar_total_gastos():
 
     print(f"El gasto total es: ${total}")
 
+def buscar_por_placa():
+
+    print("\n--- BUSCAR GASTOS ---")
+
+    placa_buscar = input("Ingrese la placa: ")
+
+    encontrado = False
+
+    for gasto in gastos:
+
+        if gasto["placa"] == placa_buscar:
+
+            print("\nGasto encontrado")
+            print(f"Concepto: {gasto['concepto']}")
+            print(f"Valor: ${gasto['valor']}")
+
+            encontrado = True
+
+    if not encontrado:
+        print("No se encontraron gastos para esa placa")
 
 while True:
 
@@ -49,7 +69,7 @@ while True:
         mostrar_total_gastos()
 
     elif opcion == "3":
-        pass
+        buscar_por_placa()
 
     elif opcion == "4":
         print("Saliendo del programa...")
