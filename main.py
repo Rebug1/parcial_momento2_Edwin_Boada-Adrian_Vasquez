@@ -20,6 +20,17 @@ def registrar_gasto():
 
     print("Gasto registrado correctamente")
 
+def mostrar_total_gastos():
+
+    print("\n--- TOTAL DE GASTOS ---")
+
+    total = 0
+
+    for gasto in gastos:
+        total += gasto["valor"]
+
+    print(f"El gasto total es: ${total}")
+
 
 while True:
 
@@ -35,7 +46,7 @@ while True:
         registrar_gasto()
 
     elif opcion == "2":
-        pass
+        mostrar_total_gastos()
 
     elif opcion == "3":
         pass
