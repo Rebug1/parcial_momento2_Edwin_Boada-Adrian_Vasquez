@@ -1,5 +1,26 @@
 gastos = []
 
+def registrar_gasto():
+
+    print("\n--- REGISTRAR GASTO ---")
+
+    placa = input("Ingrese la placa del vehículo: ")
+
+    concepto = input("Ingrese el concepto: ")
+
+    valor = float(input("Ingrese el valor del gasto: "))
+
+    gasto = {
+        "placa": placa,
+        "concepto": concepto,
+        "valor": valor
+    }
+
+    gastos.append(gasto)
+
+    print("Gasto registrado correctamente")
+
+
 while True:
 
     print("\n====== GESTOR DE GASTOS ======")
@@ -11,7 +32,7 @@ while True:
     opcion = input("Seleccione una opción: ")
 
     if opcion == "1":
-        pass
+        registrar_gasto()
 
     elif opcion == "2":
         pass
