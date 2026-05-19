@@ -264,8 +264,8 @@ def buscar_por_placa():
 
                 encontrado = True
 
-        if not encontrado:
-            print("No se encontraron gastos para esa placa")
+                if not encontrado:
+                    print("No se encontraron gastos para esa placa")
 
     except (ValueError, TypeError):
         print("Error: existe un gasto con informacion invalida.")
@@ -309,5 +309,96 @@ def main():
         except Exception as error:
             print(f"Error inesperado en el menu principal: {error}")
 
+# ==============================================================================
+# AGREGADO AL FINAL: NUEVAS FUNCIONES PARA EXTENDER EL PROGRAMA SIN TOCAR LO ANTERIOR
+# ==============================================================================
+
+def mostrar_reporte_estadistico():
+    """Calcula y muestra estadísticas detalladas de los gastos registrados."""
+    try:
+        print("\n--- REPORTE ESTADÍSTICO DE GASTOS ---")
+        
+        if not gastos:
+            print("No hay suficientes datos para generar estadísticas.")
+            return
+
+        conteo_por_concepto = {}
+        total_por_vehiculo = {}
+        gasto_mas_alto = {"valor": 0, "placa": "", "concepto": ""}
+
+        for gasto in gastos:
+            if not isinstance(gasto, dict):
+                continue
+                
+            placa = gasto.get("placa")
+            concepto = gasto.get("concepto")
+            valor = gasto.get("valor", 0)
+
+            # 1. Agrupar la cantidad de veces que se repite un concepto
+            conteo_por_concepto[concepto] = conteo_por_concepto.get(concepto, 0) + 1
+
+            # 2. Acumular el total de dinero gastado por cada vehículo (placa)
+            total_por_vehiculo[placa] = total_por_vehiculo.get(placa, 0) + valor
+
+            # 3. Identificar el gasto individual más costoso registrado
+            if valor > gasto_mas_alto["valor"]:
+                gasto_mas_alto = {"valor": valor, "placa": placa, "concepto": concepto}
+
+        # --- Presentación de resultados en pantalla ---
+        print(f"\n1. Vehículo con mayor gasto acumulado:")
+        if total_por_vehiculo:
+            placa_max = max(total_por_vehiculo, key=total_por_vehiculo.get)
+            print(f"   Placa: {placa_max} -> Total: {formatear_pesos_colombianos(total_por_vehiculo[placa_max])}")
+
+        print(f"\n2. Gasto individual más costoso:")
+        if gasto_mas_alto["valor"] > 0:
+            print(f"   Vehículo: {gasto_mas_alto['placa']}")
+            print(f"   Concepto: {gasto_mas_alto['concepto']}")
+            print(f"   Valor:    {formatear_pesos_colombianos(gasto_mas_alto['valor'])}")
+
+        print(f"\n3. Frecuencia de gastos por concepto:")
+        for con, cantidad in conteo_por_concepto.items():
+            print(f"   - {con.capitalize()}: {cantidad} vez/veces")
+
+    except Exception as error:
+        print(f"Error inesperado al generar el reporte: {error}")
+
+def mostrar_menu_extendido():
+    """Reemplaza visualmente al menú anterior añadiendo la nueva opción."""
+    print("\n====== GESTOR DE GASTOS EXTENDIDO ======")
+    print("1. Registrar gasto")
+    print("2. Mostrar total de gastos")
+    print("3. Buscar gastos por placa")
+    print("4. Ver Reporte Estadístico Detallado (Nuevo)")
+    print("5. Salir")
+
+def main_extendido():
+    """Sobrescribe el bucle principal incorporando el nuevo flujo."""
+    while True:
+        try:
+            mostrar_menu_extendido()
+            opcion = input("Seleccione una opcion: ").strip()
+
+            if opcion == "1":
+                registrar_gasto()
+            elif opcion == "2":
+                mostrar_total_gastos()
+            elif opcion == "3":
+                buscar_por_placa()
+            elif opcion == "4":
+                mostrar_reporte_estadistico()
+            elif opcion == "5":
+                print("Saliendo del programa...")
+                break
+            else:
+                print("Error: opcion invalida. Seleccione un numero del 1 al 5.")
+
+        except (KeyboardInterrupt, EOFError):
+            print("\nSaliendo del programa...")
+            break
+        except Exception as error:
+            print(f"Error inesperado en el menu principal: {error}")
+
+# Reasignamos el punto de entrada para que ejecute nuestra lógica extendida
 if __name__ == "__main__":
-    main() 
+    main_extendido()
